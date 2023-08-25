@@ -84,7 +84,8 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 
 ## Links
-The URL of deployed application
+* The URL of github repository:  https://github.com/soniasebastian/socialmedia-api
+* Link to walkthrough video: https://drive.google.com/file/d/1siXm4otZUhaeli37yV-h6Ak5698xpb6B/view
 
 
 ## Contribution:
