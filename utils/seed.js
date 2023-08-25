@@ -24,6 +24,12 @@ const users = [
         email: 'haviltony@test.com',
         password: "123test",
         friends: []
+    },
+    {
+        username: "IreneRose",
+        email: 'irenerose@test.com',
+        password: "123hello",
+        friends: []
     }
 ];
 //data on thoughts
@@ -41,6 +47,11 @@ const thoughts = [
     {
         thoughtText: "We can meet the next day!!",
         username: "HavilTony",
+        reactions: []
+    },
+    {
+        thoughtText: "This is a great thought!!",
+        username: "IreneRose",
         reactions: []
     }
 ];
@@ -60,6 +71,11 @@ const reactions = [
         reactionId: new mongoose.Types.ObjectId(),
         reactionBody: "Yes I do!",
         username: "MilanJames"
+    },
+    {
+        reactionId: new mongoose.Types.ObjectId(),
+        reactionBody: "Thats great!",
+        username: "IreneRose"
     }
 ];
 

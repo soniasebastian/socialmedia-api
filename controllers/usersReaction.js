@@ -1,15 +1,15 @@
 const { ObjectId } = require('mongoose').Types;
-const { User, Thought } = require ('../models');
+const { User, Reaction } = require ('../models');
 
 
 module.exports = {
     async getAllReactions(req, res) {
         try {
-            const users = await User.find();
-            const userObj = {
-                users,
+            const reaction = await Reaction.find();
+            const reactionObj = {
+                reaction,
             };
-            return res.json(userObj);
+            return res.json(reactionObj);
         } catch (err) {
             console.log(err);
             return res.status(500).json(err);
@@ -26,15 +26,36 @@ module.exports = {
          { runValidators: true, new: true }
        );
    
-       if (!user) {
+       if (!reaction) {
          return res
            .status(404)
            .json({ message: `${username} is invalid and no reaction can be added.` })
        }
    
-       res.json(user);
+       res.json(reaction);
      } catch (err) {
        res.status(500).json(err);
      }
    },
-   }
+   
+   async deleteReaction(req, res) {
+    try {
+      const reaction = await Reaction.findOneAndUpdate(
+            { _id:req.params.reactionId }, 
+            {$pull: { reaction: req.params.reactionId }},
+            { new: true }
+            );
+    if (!reaction) {
+                return res.status(404).json({ message: 'No user with that ID or username if found.'});
+            }
+
+            res.json({
+                reaction,      
+            })  
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+},
+}
+
