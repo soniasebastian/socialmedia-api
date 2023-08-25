@@ -20,10 +20,10 @@ router.route('/:_id').delete(deleteThought);
 router.route('/:_id').put(updateThought);
 // CREATE a new reaction to another user's thought
 const {
-    addReaction,
+    createReaction,
     deleteReaction,
 } = require ('../../controllers/usersReaction')
-router.route('/:thoughtId/reactions').post(addReaction);
+router.route('/:thoughtId/reactions').post(createReaction);
 router.route('/:thoughtId/reactions/:reactionId').delete(deleteReaction);
 
 

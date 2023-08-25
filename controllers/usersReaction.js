@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongoose').Types;
-const { User, Reaction } = require ('../models');
+const { Thought, Reaction } = require ('../models');
 
 
 module.exports = {
@@ -16,46 +16,42 @@ module.exports = {
         }
     },
     // Add a new reaction for a user's thought
-    async addReaction(req, res) {
-     try {
-       console.log('You are adding a new reaction');
-       console.log(req.body);
-       const reaction = await Reaction.findOneAndUpdate(
-         { reactionBody: req.params.reactionBody },
-         { $addToSet: { thoughtText: req.body } },
-         { runValidators: true, new: true }
-       );
-   
-       if (!reaction) {
-         return res
-           .status(404)
-           .json({ message: `${username} is invalid and no reaction can be added.` })
-       }
-   
-       res.json(reaction);
-     } catch (err) {
-       res.status(500).json(err);
-     }
-   },
-   
-   async deleteReaction(req, res) {
-    try {
-      const reaction = await Reaction.findOneAndUpdate(
-            { _id:req.params.reactionId }, 
-            {$pull: { reaction: req.params.reactionId }},
-            { new: true }
-            );
-    if (!reaction) {
-                return res.status(404).json({ message: 'No user with that ID or username if found.'});
-            }
+    async createReaction(req, res) {
+      try {
+          const thought = await Thought
+              .findOneAndUpdate(
+              { _id: req.params.thoughtId },
+              { $addToSet: { reactions: req.body} },
+              { new: true })
+              .populate({path: 'reactions', select: '-__v'})
+              .select('-__v')
 
-            res.json({
-                reaction,      
-            })  
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json(err);
-    }
-},
-}
+          if (!thought) {
+              return res.status(404).json({ message: 'No thought with that ID' });
+          }
+
+          res.json(thought);
+      } catch (err) {
+          res.status(500).json(err);
+      }
+  },
+
+  async deleteReaction(req, res) {
+      try {
+          const thought = await Thought.findOneAndUpdate(
+              {_id: req.params.thoughtId},
+              {$pull: {reactions: {_id : req.params.reactionId}}},
+              { runValidators: true, new: true })
+
+          if (!thought) {
+              return res.status(404).json({ message: 'Check thought and reaction ID!' });
+          }
+
+          res.json(thought);
+      } catch (err) {
+          res.status(500).json(err);
+      }
+  },
+};
+
 
